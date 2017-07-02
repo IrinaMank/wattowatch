@@ -9,12 +9,12 @@ import java.util.List;
  */
 
 public class Movie {
-    //public static final TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
+    public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
 
     private String title;
 
-   // @SerializedName("poster_path")
-    //private String poster;
+    @SerializedName("poster_path")
+    private String poster;
 
     //@SerializedName("overview")
     //private String description;
@@ -32,14 +32,14 @@ public class Movie {
         this.title = title;
     }
 
-   /* public String getPoster() {
+   public String getPoster() {
         return TMDB_IMAGE_PATH + poster;
     }
 
     public void setPoster(String poster) {
         this.poster = poster;
     }
-
+/*
     public String getDescription() {
         return description;
     }

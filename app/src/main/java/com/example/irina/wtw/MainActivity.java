@@ -2,6 +2,7 @@ package com.example.irina.wtw;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn;
     EditText searchView;
     RecyclerView mRecyclerView;
+    MovieAdapter mAdapter;
     //ToDO 1: adapter for recyclerview
     //ToDo 2: get api_key
     //ToDo 3: rewrite succesee
@@ -30,15 +32,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String searchText = searchView.getText().toString();
-
+                work();
             }
         });
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mAdapter = new MovieAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    void work(){
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key", "YOUR_API_KEY");
+                        request.addEncodedQueryParam("api_key", "e9eb5705dd6fbca54e9c6a893676ab3c");
                     }
                 })
                 .build();
@@ -46,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         service.searchMovie(new Callback<Movie.MovieResult>() {
             @Override
             public void success(Movie.MovieResult movieResult, Response response) {
+                mAdapter.setMovieList(movieResult.getResults());
 
             }
 
@@ -55,6 +66,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }
