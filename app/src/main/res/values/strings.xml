@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">WtW</string>
     <string name="ok_btn">Search</string>
+    <string name="api_key">e9eb5705dd6fbca54e9c6a893676ab3c</string>
+    <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
 </resources>
