@@ -10,4 +10,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppBar" parent="@android:style/TextAppearance">
+        <item name="android:textSize">34sp</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
 </resources>

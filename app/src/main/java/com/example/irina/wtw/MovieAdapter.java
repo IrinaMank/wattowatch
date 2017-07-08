@@ -1,14 +1,21 @@
 package com.example.irina.wtw;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +23,8 @@ import java.util.List;
  * Created by Irina on 01.07.2017.
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
+//ToDo:maybe remove implemets seri-ble
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
     private LayoutInflater mInflater;
     private Context mContext;
@@ -39,6 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         Movie mMovie = mList.get(position);
         Picasso.with(mContext).load(mMovie.getPoster()).into(holder.imageView);
+        holder.textView.setText(mMovie.getTitle());
     }
 
     @Override
@@ -52,4 +61,37 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         mList.addAll(newList);
         notifyDataSetChanged();
     }
+
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements Serializable {
+
+        private ImageView imageView;
+        private TextView textView;
+
+
+        public MovieViewHolder(View itemView) {
+            super(itemView);
+            imageView = (ImageView) itemView.findViewById(R.id.poster_imageView);
+            textView = (TextView) itemView.findViewById(R.id.title_textView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View vi) {
+                    Log.i("OKOKOKOK", "hello this is click");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent i = new Intent(mContext, MovieDetailActivity.class);
+                            //i.putExtra("MOVIE_TITLE", mList.get(getLayoutPosition()).getTitle());
+                            //i.putExtra("MOVIE_TITLE", (Serializable) mList.get(getLayoutPosition()));
+                            Bundle mBundle = new Bundle();
+                            mBundle.putSerializable("MOVIE_TITLE", (Serializable) mList.get(getLayoutPosition()));
+                            i.putExtras(mBundle);
+
+                            mContext.startActivity(i);
+                        }
+                    }, 300); // <--- Giving time to the ripple effect finish before opening a new activity
+                }
+            });
+        }
+    }
+
 }

@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,7 +18,6 @@ import retrofit2.Retrofit;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.irina.wtw.R.string.api_key;
 
 public class MainActivity extends AppCompatActivity {
     Button btn;
@@ -35,13 +32,15 @@ public class MainActivity extends AppCompatActivity {
     //ToDo: bd for favourite movies
     //ToDo: on every device
     //ToDo: constraint layout
-    //ToDo: images loads really slowly - picasso
+    //ToDo: how many movies api post
+    //ToDO: text in cards: another font, center, ... if no place
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         mAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        MenuItemCompat.setOnActionExpandListener(myActionMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                service.getPopularMovies(getString(R.string.api_key)).enqueue(mCallback);
+                return true;
+            }
+        });
         return true;
     }
 
@@ -84,17 +95,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Movie.MovieResult> call, retrofit2.Response<Movie.MovieResult> response) {
                 if (response.isSuccessful()) {
-                    Log.i("PROVARETROFIT", "OK");
-                    System.out.println("ok");
                     mAdapter.setMovieList(response.body().getResults());
-                }else{
-                    System.out.println("Unsuccesful 1l "+ response.errorBody());}
+                }else{}
 
 
             }
             @Override
             public void onFailure(Call<Movie.MovieResult> call, Throwable t) {
-                System.out.println("Unsuccesfull 2");
+                //ToDo: is it neccesary
 
             }
         };
