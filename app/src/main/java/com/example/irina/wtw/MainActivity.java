@@ -1,6 +1,14 @@
 package com.example.irina.wtw;
 
+import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,95 +27,103 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity {
-    Button btn;
-    SearchView searchView;
-    RecyclerView mRecyclerView;
-    MovieAdapter mAdapter;
-    Toolbar mToolbar;
-    private Retrofit retrofit;
-    MoviesApiService service;
-    Callback<Movie.MovieResult> mCallback;
-    String query;
-    //ToDo: bd for favourite movies
-    //ToDo: on every device
-    //ToDo: constraint layout
-    //ToDo: how many movies api post
-    //ToDO: text in cards: another font, center, ... if no place
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawer;
+    Toolbar mtoolbar;
+    MoviesTable dbAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        mAdapter = new MovieAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        work();
-        service.getPopularMovies(getString(R.string.api_key)).enqueue(mCallback);
+        setContentView(R.layout.drawer_layout);
+        mtoolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mtoolbar);
+        dbAdapter = new MoviesTable(this);
+        dbAdapter.open();
+        Fragment fragment = null;
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, mtoolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
+        navigationView.setNavigationItemSelectedListener(this);
+        try {
+            fragment = (Fragment) Search.class.newInstance();
+        }
+        catch(Exception e)
+        {
+
+        }
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.flContent, fragment);
+        tx.commit();
+
     }
 
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
-    public boolean onCreateOptionsMenu( Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-
-        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
-        searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String mquery) {
-                query=mquery;
-               // work();
-                service.searchMovie(getString(R.string.api_key), query).enqueue(mCallback);
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                return false;
-            }
-        });
-        MenuItemCompat.setOnActionExpandListener(myActionMenuItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                service.getPopularMovies(getString(R.string.api_key)).enqueue(mCallback);
-                return true;
-            }
-        });
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    void work(){
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(MoviesApiService.class);
-        mCallback = new Callback<Movie.MovieResult>() {
-            @Override
-            public void onResponse(Call<Movie.MovieResult> call, retrofit2.Response<Movie.MovieResult> response) {
-                if (response.isSuccessful()) {
-                    mAdapter.setMovieList(response.body().getResults());
-                }else{}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
-            }
-            @Override
-            public void onFailure(Call<Movie.MovieResult> call, Throwable t) {
-                //ToDo: is it neccesary
-
-            }
-        };
-        service.searchMovie(getString(R.string.api_key), query).enqueue(mCallback);
+        return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        Fragment fragment = null;
+        Class fragmentClass;
+        int id = item.getItemId();
+        fragmentClass = Search.class;
+        if (id == R.id.nav_statistics) {
+            fragmentClass = Search.class;
+        }
+        else { // (id == R.id.nav_list)
+            fragmentClass = DBActivity.class;
+        }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        }
+        catch(Exception e)
+        {
 
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.flContent, fragment); // newInstance() is a static factory method.
+        transaction.addToBackStack(null);
+        transaction.commit();//ERROR
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
+

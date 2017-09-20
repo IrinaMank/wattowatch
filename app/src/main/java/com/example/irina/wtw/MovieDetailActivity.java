@@ -1,6 +1,8 @@
 package com.example.irina.wtw;
 
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -8,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,43 +27,60 @@ import java.io.Serializable;
  */
 //ToDo: cool full info
 //ToDo: replace ser with parceable
-//ToDo: change height of toolbar and text larger and on the top
+//ToDo: change height of menu_toolbar and text larger and on the top
 //ToDo: large poster, margin top and bottom, bottom frame, povorot
     //ToDo: title at the beginning of tv, button to add
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends Fragment {
     private CollapsingToolbarLayout toolbarLayout;
     ImageView image;
     TextView description;
     Toolbar mToolbar;
-    Button mButton;
-
+    FloatingActionButton mButton;
+    ViewGroup root;
+    Movie mMovie;
+    MainActivity mainActivity;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
-        Intent intent = getIntent();
-        Movie mMovie =(Movie) intent.getSerializableExtra("MOVIE_TITLE");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        root = (ViewGroup) inflater.inflate(R.layout.activity_movie_detail, null);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mMovie = (Movie) bundle.getSerializable("MOVIE_TITLE");
+        }
+        if (getActivity() != null)
+            mainActivity = (MainActivity ) getActivity();
+
 
         //toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         //toolbarLayout.setTitle(mMovie.getTitle());
 
-        image = (ImageView) findViewById(R.id.cover);
-        Picasso.with(this).load(mMovie.getPoster()).into(image);
+        image = (ImageView) root.findViewById(R.id.cover);
+        Picasso.with(getContext()).load(mMovie.getBackdrop()).into(image);
 
-        description = (TextView) findViewById(R.id.description);
+        description = (TextView) root.findViewById(R.id.description);
         description.setText(mMovie.getDescription());
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_detail);
-        setSupportActionBar(mToolbar);
+        // mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_detail);
+        //getActivity().setSupportActionBar(mToolbar);
 
-        mButton = (Button) findViewById(R.id.fab);
-        mButton.setOnClickListener(new View.OnClickListener() {
+//        mButton = (Button) root.findViewById(R.id.fab);
+        /*mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //add to db
             }
+        });*/
+
+        mButton = (FloatingActionButton) root.findViewById(R.id.fab);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPoster(), mMovie.getDescription());
+            }
         });
+        return root;
     }
+
+
 
 }

@@ -1,9 +1,13 @@
 package com.example.irina.wtw;
 
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,18 +79,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View vi) {
-                    Log.i("OKOKOKOK", "hello this is click");
+
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(mContext, MovieDetailActivity.class);
+                            //Intent i = new Intent(mContext, MovieDetailActivity.class);
                             //i.putExtra("MOVIE_TITLE", mList.get(getLayoutPosition()).getTitle());
                             //i.putExtra("MOVIE_TITLE", (Serializable) mList.get(getLayoutPosition()));
                             Bundle mBundle = new Bundle();
                             mBundle.putSerializable("MOVIE_TITLE", (Serializable) mList.get(getLayoutPosition()));
-                            i.putExtras(mBundle);
-
-                            mContext.startActivity(i);
+                            //i.putExtras(mBundle);
+                            Fragment toFragment = new MovieDetailActivity();
+                            toFragment.setArguments(mBundle);
+                            android.support.v4.app.FragmentManager fragmentManager =((FragmentActivity)mContext).getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction
+                                    .replace(R.id.flContent, toFragment)
+                                    .addToBackStack(null)
+                                    .commit();
                         }
                     }, 300); // <--- Giving time to the ripple effect finish before opening a new activity
                 }

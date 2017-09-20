@@ -24,7 +24,12 @@ public class Movie implements Serializable {
     @SerializedName("backdrop_path")
     private String backdrop;
 
-    public Movie() {}
+    private Integer id;
+    public Movie(String title, String poster, String description) {
+        this.title = title;
+        this.poster = poster;
+        this.description = description;
+    }
 
     public String getTitle() {
         return title;
@@ -64,6 +69,14 @@ public class Movie implements Serializable {
 
     public void setBackdrop(String backdrop) {
         this.backdrop = backdrop;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public static class MovieResult {
