@@ -2,6 +2,7 @@ package com.example.irina.wtw;
 
 import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,8 +33,9 @@ import java.io.Serializable;
 //ToDo: change height of menu_toolbar and text larger and on the top
 //ToDo: large poster, margin top and bottom, bottom frame, povorot
     //ToDo: title at the beginning of tv, button to add
+    //ToDo: rename this to Fragment
 
-public class MovieDetailActivity extends Fragment {
+public class MovieDetailActivity extends DialogFragment {
     private CollapsingToolbarLayout toolbarLayout;
     ImageView image;
     TextView description;
@@ -40,6 +44,11 @@ public class MovieDetailActivity extends Fragment {
     ViewGroup root;
     Movie mMovie;
     MainActivity mainActivity;
+
+    public MovieDetailActivity() {
+        // Empty constructor required for DialogFragment
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.activity_movie_detail, null);
@@ -49,7 +58,7 @@ public class MovieDetailActivity extends Fragment {
         }
         if (getActivity() != null)
             mainActivity = (MainActivity ) getActivity();
-
+        View view = inflater.inflate(R.layout.activity_movie_detail, container, false);
 
         //toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         //toolbarLayout.setTitle(mMovie.getTitle());
@@ -59,7 +68,7 @@ public class MovieDetailActivity extends Fragment {
 
         description = (TextView) root.findViewById(R.id.description);
         description.setText(mMovie.getDescription());
-
+        description.setMovementMethod(new ScrollingMovementMethod());
         // mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_detail);
         //getActivity().setSupportActionBar(mToolbar);
 
@@ -78,6 +87,9 @@ public class MovieDetailActivity extends Fragment {
                 mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPoster(), mMovie.getDescription());
             }
         });
+
+
+        //getDialog().setTitle("Info");
         return root;
     }
 

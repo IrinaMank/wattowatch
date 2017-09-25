@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+//ToDo:activity_detail toolbar perekryvaet
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     Toolbar mtoolbar;
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         Class fragmentClass;
         int id = item.getItemId();
-        fragmentClass = Search.class;
+        fragmentClass = DBActivity.class;
         if (id == R.id.nav_statistics) {
             fragmentClass = Search.class;
         }
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Insert the fragment by replacing any existing fragment
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.flContent, fragment); // newInstance() is a static factory method.
+        transaction.replace(R.id.flContent, fragment); // newInstance() is a static factory method.
         transaction.addToBackStack(null);
         transaction.commit();//ERROR
 

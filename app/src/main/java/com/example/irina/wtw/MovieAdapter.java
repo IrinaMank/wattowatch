@@ -94,7 +94,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                             android.support.v4.app.FragmentManager fragmentManager =((FragmentActivity)mContext).getSupportFragmentManager();
                             android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction
-                                    .replace(R.id.flContent, toFragment)
+                                    .add(R.id.flContent, toFragment)
                                     .addToBackStack(null)
                                     .commit();
                         }
