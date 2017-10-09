@@ -45,8 +45,9 @@ public class MovieDetailActivity extends DialogFragment {
     Movie mMovie;
     MainActivity mainActivity;
 
-    public MovieDetailActivity() {
-        // Empty constructor required for DialogFragment
+    static MovieDetailActivity newInstance(int num) {
+        MovieDetailActivity f = new MovieDetailActivity();
+        return f;
     }
 
     @Override
@@ -84,7 +85,8 @@ public class MovieDetailActivity extends DialogFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPoster(), mMovie.getDescription());
+                mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPosterUrl(), mMovie.getDescription());
+                dismiss();
             }
         });
 

@@ -5,10 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-/**
- * Created by Irina on 08.07.2017.
- */
-
 public class MoviesTable {
     public static final String KEY_ROWID = "_id";
     public static final String KEY_TITLE = "title";
@@ -42,10 +38,15 @@ public class MoviesTable {
         return database.insert(DATABASE_TABLE, null, value);
     }
 
-    public Cursor fetchAllTodos() {
+    public Cursor fetchAllMovies() {
         return database.query(DATABASE_TABLE, new String[] { KEY_ROWID, KEY_TITLE, KEY_IMAGE,
                         KEY_SUMMARY }, null, null, null,
                 null, null, null);
+    }
+
+    public boolean deleteAllMovies() {
+        return database.delete(DATABASE_TABLE, null, null) > 0;
+
     }
 
 

@@ -4,10 +4,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_db"
-            android:title="Want to Watch" />
+            android:title="@string/action_wtw" />
         <item
             android:id="@+id/nav_statistics"
-            android:title="Statistics" />
+            android:title="@string/action_search" />
     </group>
 
 </menu>

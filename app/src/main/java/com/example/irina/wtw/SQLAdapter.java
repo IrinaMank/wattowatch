@@ -4,13 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Irina on 08.07.2017.
- */
 
 public class SQLAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "moviesDB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_CREATE = "create table movies (_id integer primary key autoincrement, "
             + "title text not null, image text not null, summary text not null);";
 
@@ -27,5 +24,6 @@ public class SQLAdapter extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS movies");
+        onCreate(sqLiteDatabase);
     }
 }

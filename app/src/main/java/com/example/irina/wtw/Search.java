@@ -2,11 +2,13 @@ package com.example.irina.wtw;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,8 +108,8 @@ public class Search extends Fragment {
             public void onResponse(Call<Movie.MovieResult> call, retrofit2.Response<Movie.MovieResult> response) {
                 if (response.isSuccessful()) {
                     mAdapter.setMovieList(response.body().getResults());
-                }else{}
 
+                }else{}
 
             }
             @Override

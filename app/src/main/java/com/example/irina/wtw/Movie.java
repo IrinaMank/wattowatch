@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Irina on 29.06.2017.
- */
 
 public class Movie implements Serializable {
     public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w154";
@@ -41,6 +38,10 @@ public class Movie implements Serializable {
 
    public String getPoster() {
         return TMDB_IMAGE_PATH + poster;
+    }
+
+    public String getPosterUrl() {
+        return poster;
     }
 
     public void setPoster(String poster) {
