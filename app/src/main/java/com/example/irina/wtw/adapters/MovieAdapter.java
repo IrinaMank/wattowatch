@@ -1,4 +1,4 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.adapters;
 
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.irina.wtw.activities.MovieDetailActivity;
+import com.example.irina.wtw.R;
+import com.example.irina.wtw.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;

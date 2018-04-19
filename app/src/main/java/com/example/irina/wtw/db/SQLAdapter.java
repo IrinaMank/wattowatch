@@ -1,4 +1,4 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

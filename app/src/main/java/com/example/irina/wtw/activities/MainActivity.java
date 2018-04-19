@@ -1,30 +1,20 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.activities;
 
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.irina.wtw.db.MoviesTable;
+import com.example.irina.wtw.R;
 
 //ToDo:activity_detail toolbar perekryvaet
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

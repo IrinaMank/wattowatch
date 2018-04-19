@@ -1,4 +1,4 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.model;
 
 import com.google.gson.annotations.SerializedName;
 

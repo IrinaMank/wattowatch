@@ -1,6 +1,6 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.network;
 
-import java.util.List;
+import com.example.irina.wtw.model.Movie;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

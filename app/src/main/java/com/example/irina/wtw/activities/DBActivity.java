@@ -1,10 +1,7 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -12,17 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.irina.wtw.R;
+import com.example.irina.wtw.activities.MainActivity;
+import com.example.irina.wtw.adapters.DBRecyclerAdapter;
+import com.example.irina.wtw.model.Movie;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by Irina on 14.07.2017.
  */
 
-public class DBActivity extends Fragment{
+public class DBActivity extends android.support.v4.app.Fragment {
     ViewGroup root;
     RecyclerView mRecyclerView;
     DBRecyclerAdapter movieAdapter;
@@ -48,7 +47,7 @@ public class DBActivity extends Fragment{
             }while (cursor.moveToNext());
         }
         movieAdapter = new DBRecyclerAdapter(mainActivity, mList);
-        mRecyclerView.setAdapter(movieAdapter);
+        //mRecyclerView.setAdapter(movieAdapter);
         setUpItemTouchHelper();
         //movieAdapter.setMovieList(mList);
         movieAdapter.notifyDataSetChanged();

@@ -1,29 +1,20 @@
-package com.example.irina.wtw;
+package com.example.irina.wtw.activities;
 
-import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.design.widget.CollapsingToolbarLayout;
 
+import com.example.irina.wtw.R;
+import com.example.irina.wtw.model.Movie;
 import com.squareup.picasso.Picasso;
-
-import java.io.Serializable;
 
 /**
  * Created by Irina on 07.07.2017.
