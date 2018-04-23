@@ -48,6 +48,4 @@ public class MoviesTable {
         return database.delete(DATABASE_TABLE, null, null) > 0;
 
     }
-
-
 }

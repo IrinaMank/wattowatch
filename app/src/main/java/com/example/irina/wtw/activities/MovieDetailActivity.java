@@ -1,20 +1,32 @@
 package com.example.irina.wtw.activities;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.widget.Toast;
 
 import com.example.irina.wtw.R;
 import com.example.irina.wtw.model.Movie;
+import com.example.irina.wtw.model.Review;
+import com.example.irina.wtw.services.FirebaseReviewStorage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import static android.support.constraint.Constraints.TAG;
 
 /**
  * Created by Irina on 07.07.2017.
@@ -76,6 +88,32 @@ public class MovieDetailActivity extends DialogFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                OnSuccessListener<DocumentReference> s = new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Context context = mainActivity.getApplicationContext();
+                        CharSequence text = "Success";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                    }
+                };
+                OnFailureListener f = new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Context context = mainActivity.getApplicationContext();
+                        CharSequence text = "Failure";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                };
+                FirebaseReviewStorage storage = new FirebaseReviewStorage();
+                Review rev = new Review(22, 3, "test2");
+                storage.addReview(rev, s, f);
                 mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPosterUrl(), mMovie.getDescription());
                 dismiss();
             }

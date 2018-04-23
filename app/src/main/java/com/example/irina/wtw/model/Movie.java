@@ -9,7 +9,6 @@ import java.util.List;
 public class Movie implements Serializable {
     public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w154";
     public static final String TMDB_BD_PATH = "http://image.tmdb.org/t/p/w500";
-    public static final String TMDB_BIG_PATH = "http://image.tmdb.org/t/p/w500";
     private String title;
 
     @SerializedName("poster_path")
@@ -44,18 +43,6 @@ public class Movie implements Serializable {
         return poster;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
-
-    public String getBigPoster() {
-        return TMDB_BIG_PATH + poster;
-    }
-
-    public void setBigPoster(String poster) {
-        this.poster = poster;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -66,10 +53,6 @@ public class Movie implements Serializable {
 
     public String getBackdrop() {
         return TMDB_BD_PATH  + backdrop;
-    }
-
-    public void setBackdrop(String backdrop) {
-        this.backdrop = backdrop;
     }
 
     public Integer getId() {
