@@ -1,6 +1,8 @@
 package com.example.irina.wtw.services;
 
+import com.example.irina.wtw.model.Movie;
 import com.example.irina.wtw.model.Review;
+import com.example.irina.wtw.model.Want;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,5 +17,7 @@ public interface ReviewStorage {
     void deleteReview(Review review, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
     void updateReview(Review newReview, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
     Review getReview(Integer index);
+
+    void addWant(Want want, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
 
 }

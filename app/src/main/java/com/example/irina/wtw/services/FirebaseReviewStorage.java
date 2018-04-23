@@ -3,7 +3,9 @@ package com.example.irina.wtw.services;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.irina.wtw.model.Movie;
 import com.example.irina.wtw.model.Review;
+import com.example.irina.wtw.model.Want;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -12,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.util.Date;
 import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
@@ -50,5 +53,13 @@ public class FirebaseReviewStorage implements ReviewStorage{
 
     public void updateReview(Review newReview, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener) {
 
+    }
+
+    public void addWant(Want want, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener) {
+
+        db.collection("wants")
+                .add(want)
+                .addOnSuccessListener(successListener)
+                .addOnFailureListener(failureListener);
     }
 }

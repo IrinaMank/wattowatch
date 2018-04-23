@@ -46,10 +46,10 @@ public class DBActivity extends android.support.v4.app.Fragment {
 
             }while (cursor.moveToNext());
         }
-        movieAdapter = new DBRecyclerAdapter(mainActivity, mList);
-        //mRecyclerView.setAdapter(movieAdapter);
+        movieAdapter = new DBRecyclerAdapter(mainActivity);
+        mRecyclerView.setAdapter(movieAdapter);
         setUpItemTouchHelper();
-        //movieAdapter.setMovieList(mList);
+        movieAdapter.setMovieList(mList);
         movieAdapter.notifyDataSetChanged();
 
         return root;

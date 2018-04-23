@@ -11,6 +11,7 @@ import com.example.irina.wtw.R;
 import com.example.irina.wtw.model.Movie;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,10 +20,10 @@ public class DBRecyclerAdapter extends RecyclerView.Adapter<DBRecyclerAdapter.Mo
     private Context mContext;
     private List<Movie> mList;
 
-    public DBRecyclerAdapter(Context context, List<Movie> newList){
+    public DBRecyclerAdapter(Context context){
         mContext = context;
         mInflater = LayoutInflater.from(context);
-        mList = newList;
+        mList = new ArrayList<>();
     }
 
     @Override

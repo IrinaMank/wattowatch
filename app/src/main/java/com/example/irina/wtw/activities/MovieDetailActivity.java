@@ -19,12 +19,15 @@ import android.widget.Toast;
 import com.example.irina.wtw.R;
 import com.example.irina.wtw.model.Movie;
 import com.example.irina.wtw.model.Review;
+import com.example.irina.wtw.model.Want;
 import com.example.irina.wtw.services.FirebaseReviewStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.Date;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -47,6 +50,7 @@ public class MovieDetailActivity extends DialogFragment {
     ViewGroup root;
     Movie mMovie;
     MainActivity mainActivity;
+    FirebaseReviewStorage storage;
 
     static MovieDetailActivity newInstance(int num) {
         MovieDetailActivity f = new MovieDetailActivity();
@@ -64,6 +68,7 @@ public class MovieDetailActivity extends DialogFragment {
             mainActivity = (MainActivity ) getActivity();
         View view = inflater.inflate(R.layout.activity_movie_detail, container, false);
 
+        storage = new FirebaseReviewStorage();
         //toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         //toolbarLayout.setTitle(mMovie.getTitle());
 
@@ -111,10 +116,11 @@ public class MovieDetailActivity extends DialogFragment {
                         toast.show();
                     }
                 };
-                FirebaseReviewStorage storage = new FirebaseReviewStorage();
-                Review rev = new Review(22, 3, "test2");
-                storage.addReview(rev, s, f);
+
                 mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPosterUrl(), mMovie.getDescription());
+                Want want = new Want(mMovie.getId(), new Date(), "test_user");
+
+                storage.addWant(want, s, f);
                 dismiss();
             }
         });
