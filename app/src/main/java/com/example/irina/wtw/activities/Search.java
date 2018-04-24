@@ -39,18 +39,12 @@ public class Search extends Fragment {
     MoviesApiService service;
     Callback<Movie.MovieResult> mCallback;
     String query;
-    //ToDo: everuthing should be refactr and rebuild!!!
-    //ToDo: on every device
-    //ToDo: constraint layout
-    //ToDo: how many movies api post
-    //ToDO: text in cards: another font, center, ... if no place
-    //ToDo: moviesdetail into vidjet
 
     ViewGroup root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = (ViewGroup) inflater.inflate(R.layout.activity_main, null);
+        root = (ViewGroup) inflater.inflate(R.layout.activity_main, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mAdapter = new MovieAdapter(getActivity());

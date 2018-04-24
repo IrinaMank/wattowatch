@@ -11,19 +11,16 @@ import com.example.irina.wtw.R;
 import com.example.irina.wtw.model.Movie;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class DBRecyclerAdapter extends RecyclerView.Adapter<DBRecyclerAdapter.MovieViewHolder>{
     private LayoutInflater mInflater;
-    private Context mContext;
     private List<Movie> mList;
 
-    public DBRecyclerAdapter(Context context){
-        mContext = context;
+    public DBRecyclerAdapter(Context context, List<Movie> list){
         mInflater = LayoutInflater.from(context);
-        mList = new ArrayList<>();
+        mList = list;
     }
 
     @Override
@@ -45,21 +42,13 @@ public class DBRecyclerAdapter extends RecyclerView.Adapter<DBRecyclerAdapter.Mo
         else return mList.size();
     }
 
-    public Boolean setMovieList(List<Movie> newList){
-        mList.clear();
-        mList.addAll(newList);
-        notifyDataSetChanged();
-        if(mList.size()==0) return true;
-        return false;
-    }
-
     public class MovieViewHolder extends RecyclerView.ViewHolder implements Serializable {
 
         private TextView textView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.db_textView);
+            textView = itemView.findViewById(R.id.db_textView);
 
         }
     }

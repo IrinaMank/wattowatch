@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.irina.wtw.R;
-import com.example.irina.wtw.activities.MainActivity;
 import com.example.irina.wtw.adapters.DBRecyclerAdapter;
 import com.example.irina.wtw.model.Movie;
 
@@ -21,6 +20,9 @@ import java.util.List;
  * Created by Irina on 14.07.2017.
  */
 
+//TODO: deleting from cloud
+
+
 public class DBActivity extends android.support.v4.app.Fragment {
     ViewGroup root;
     RecyclerView mRecyclerView;
@@ -30,7 +32,7 @@ public class DBActivity extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.db_activity, null);
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.db_recycler_view);
+        mRecyclerView = root.findViewById(R.id.db_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mainActivity = (MainActivity) getActivity();
 
@@ -46,15 +48,12 @@ public class DBActivity extends android.support.v4.app.Fragment {
 
             }while (cursor.moveToNext());
         }
-        movieAdapter = new DBRecyclerAdapter(mainActivity);
+        movieAdapter = new DBRecyclerAdapter(mainActivity, mList);
         mRecyclerView.setAdapter(movieAdapter);
         setUpItemTouchHelper();
-        movieAdapter.setMovieList(mList);
         movieAdapter.notifyDataSetChanged();
-
         return root;
     }
-
 
     @Override
     public void onPause()
@@ -66,10 +65,8 @@ public class DBActivity extends android.support.v4.app.Fragment {
         }
     }
 
-
     private void setUpItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -79,11 +76,9 @@ public class DBActivity extends android.support.v4.app.Fragment {
                 int swipedPosition = viewHolder.getAdapterPosition();
                 mList.remove(swipedPosition);
                 movieAdapter.notifyDataSetChanged();
-
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
-
 }
