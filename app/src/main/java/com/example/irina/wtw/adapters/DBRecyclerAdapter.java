@@ -8,32 +8,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.irina.wtw.R;
-import com.example.irina.wtw.model.Movie;
+import com.example.irina.wtw.model.Want;
 
 import java.io.Serializable;
 import java.util.List;
 
 
-public class DBRecyclerAdapter extends RecyclerView.Adapter<DBRecyclerAdapter.MovieViewHolder>{
+public class DBRecyclerAdapter extends RecyclerView.Adapter<DBRecyclerAdapter.WantViewHolder>{
     private LayoutInflater mInflater;
-    private List<Movie> mList;
+    private List<Want> mList;
 
-    public DBRecyclerAdapter(Context context, List<Movie> list){
+    public DBRecyclerAdapter(Context context, List<Want> list){
         mInflater = LayoutInflater.from(context);
         mList = list;
     }
 
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public WantViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = mInflater.inflate(R.layout.db_viewholder_layout, parent, false);
-        MovieViewHolder mViewHolder = new MovieViewHolder(view);
-        return mViewHolder;
+        return new WantViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Movie mMovie = mList.get(position);
-        holder.textView.setText(mMovie.getTitle());
+    public void onBindViewHolder(WantViewHolder holder, int position) {
+        Want mWant = mList.get(position);
+        holder.textView.setText(mWant.getTitle());
     }
 
     @Override
@@ -42,11 +41,11 @@ public class DBRecyclerAdapter extends RecyclerView.Adapter<DBRecyclerAdapter.Mo
         else return mList.size();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder implements Serializable {
+    class WantViewHolder extends RecyclerView.ViewHolder implements Serializable {
 
         private TextView textView;
 
-        public MovieViewHolder(View itemView) {
+        WantViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.db_textView);
 

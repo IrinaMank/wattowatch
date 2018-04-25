@@ -8,19 +8,26 @@ import java.util.Date;
 @IgnoreExtraProperties
 public class Want {
     @PropertyName("tmdbId")
-    public Integer id;
+    public Integer tmdbId;
     @PropertyName("date")
     public Date date;
     @PropertyName("userId")
     public String userId;
+    @PropertyName("title")
+    public String title;
 
     public Want() {
 
     }
 
-    public Want(Integer id, Date date, String userId) {
-        this.id = id;
+    public Want(Integer id, String userId, Date date, String title) {
+        this.tmdbId = id;
         this.date = date;
         this.userId = userId;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

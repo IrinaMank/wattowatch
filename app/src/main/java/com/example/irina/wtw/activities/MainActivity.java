@@ -11,11 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.irina.wtw.db.MoviesTable;
+import com.example.irina.wtw.db.WantsTable;
 import com.example.irina.wtw.R;
 
 public class MainActivity extends AppCompatActivity {
-    MoviesTable dbAdapter;
+    WantsTable dbAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //set content
         Toolbar mToolbar = findViewById(R.id.include);
         setSupportActionBar(mToolbar);
-        dbAdapter = new MoviesTable(this);
+        dbAdapter = new WantsTable(this);
         dbAdapter.open();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView.OnNavigationItemSelectedListener listener = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
+                Fragment fragment;
                 Class fragmentClass = DBActivity.class;
                 switch (item.getItemId()) {
                     case R.id.nav_db:
@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_search:
                         fragmentClass = Search.class;
+                        break;
+                    case R.id.nav_profile:
+                        fragmentClass = AuthActivity.class;
                         break;
                 }
                 try {

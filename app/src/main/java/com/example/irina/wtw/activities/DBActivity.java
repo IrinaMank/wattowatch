@@ -2,6 +2,7 @@ package com.example.irina.wtw.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -11,8 +12,12 @@ import android.view.ViewGroup;
 
 import com.example.irina.wtw.R;
 import com.example.irina.wtw.adapters.DBRecyclerAdapter;
-import com.example.irina.wtw.model.Movie;
+import com.example.irina.wtw.model.Want;
+import com.example.irina.wtw.services.FirebaseStorage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,24 +33,29 @@ public class DBActivity extends android.support.v4.app.Fragment {
     RecyclerView mRecyclerView;
     DBRecyclerAdapter movieAdapter;
     MainActivity mainActivity;
-    List<Movie> mList;
+    List<Want> mList;
+    FirebaseStorage storage;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.db_activity, null);
         mRecyclerView = root.findViewById(R.id.db_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mainActivity = (MainActivity) getActivity();
-
-        Cursor cursor = mainActivity.dbAdapter.fetchAllMovies();
+        storage = new FirebaseStorage();
+        Cursor cursor = mainActivity.dbAdapter.fetchAllWants();
         mList = new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
                 String title = cursor.getString(cursor.getColumnIndex(mainActivity.dbAdapter.KEY_TITLE));
-                String image = cursor.getString(cursor.getColumnIndex(mainActivity.dbAdapter.KEY_IMAGE));
-                String summary = cursor.getString(cursor.getColumnIndex(mainActivity.dbAdapter.KEY_SUMMARY));
-                Movie mMovie = new Movie(title, image, summary);
-                mList.add(mMovie);
-
+                String tmdbId = cursor.getString(cursor.getColumnIndex(mainActivity.dbAdapter.KEY_TMDB_ID));
+                String date = cursor.getString(cursor.getColumnIndex(mainActivity.dbAdapter.KEY_DATE));
+                String userId = cursor.getString(cursor.getColumnIndex(mainActivity.dbAdapter.KEY_USER_ID));
+                int id = Integer.parseInt(tmdbId);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                try {
+                    Want mWant = new Want(id, userId, formatter.parse(date), title);
+                    mList.add(mWant);
+                } catch (Exception e) {}
             }while (cursor.moveToNext());
         }
         movieAdapter = new DBRecyclerAdapter(mainActivity, mList);
@@ -59,10 +69,6 @@ public class DBActivity extends android.support.v4.app.Fragment {
     public void onPause()
     {
         super.onPause();
-        mainActivity.dbAdapter.deleteAllMovies();
-        for (int i = 0; i < mList.size(); i++) {
-            mainActivity.dbAdapter.createMovie(mList.get(i).getTitle(), mList.get(i).getDescription(), mList.get(i).getPoster());
-        }
     }
 
     private void setUpItemTouchHelper() {
@@ -74,11 +80,33 @@ public class DBActivity extends android.support.v4.app.Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
+                Want mWant = mList.get(swipedPosition);
+                mainActivity.dbAdapter.deleteWant(mWant);
                 mList.remove(swipedPosition);
                 movieAdapter.notifyDataSetChanged();
+                storage.deleteWant(mWant, successListener(), failureListener());
+
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    private OnSuccessListener<Void> successListener() {
+        return new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void v) {
+
+            }
+        };
+    }
+
+    private OnFailureListener failureListener() {
+        return new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        };
     }
 }

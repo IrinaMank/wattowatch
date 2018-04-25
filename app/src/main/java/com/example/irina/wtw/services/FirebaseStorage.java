@@ -1,9 +1,5 @@
 package com.example.irina.wtw.services;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.example.irina.wtw.model.Movie;
 import com.example.irina.wtw.model.Review;
 import com.example.irina.wtw.model.Want;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -11,18 +7,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 
-import java.util.Date;
 import java.util.List;
 
-import static android.support.constraint.Constraints.TAG;
-
-public class FirebaseReviewStorage implements ReviewStorage{
+public class FirebaseStorage implements Storage {
     private FirebaseFirestore db;
 
-    public FirebaseReviewStorage() {
+    public FirebaseStorage() {
         db = FirebaseFirestore.getInstance();
     }
     public void addReview(Review review, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener) {
@@ -55,10 +47,19 @@ public class FirebaseReviewStorage implements ReviewStorage{
 
     }
 
-    public void addWant(Want want, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener) {
+    public void addWant(Want want, OnSuccessListener<Void> successListener, OnFailureListener failureListener) {
 
-        db.collection("wants")
-                .add(want)
+        db.collection("wants").document(want.tmdbId.toString())
+                .set(want)
+                .addOnSuccessListener(successListener)
+                .addOnFailureListener(failureListener);
+
+    }
+
+    public void deleteWant(Want want, OnSuccessListener<Void> successListener, OnFailureListener failureListener) {
+
+        db.collection("wants").document(want.tmdbId.toString())
+                .delete()
                 .addOnSuccessListener(successListener)
                 .addOnFailureListener(failureListener);
     }

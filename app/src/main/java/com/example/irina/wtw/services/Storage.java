@@ -10,7 +10,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
-public interface ReviewStorage {
+public interface Storage {
     void deleteAllReview(OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
     List<Review> getAllReviews(OnCompleteListener q);
     void addReview(Review review, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
@@ -18,6 +18,7 @@ public interface ReviewStorage {
     void updateReview(Review newReview, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
     Review getReview(Integer index);
 
-    void addWant(Want want, OnSuccessListener<DocumentReference> successListener, OnFailureListener failureListener);
+    void addWant(Want want, OnSuccessListener<Void> successListener, OnFailureListener failureListener);
+    void deleteWant(Want want, OnSuccessListener<Void> successListener, OnFailureListener failureListener);
 
 }

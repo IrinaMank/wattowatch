@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +17,15 @@ import android.widget.Toast;
 
 import com.example.irina.wtw.R;
 import com.example.irina.wtw.model.Movie;
-import com.example.irina.wtw.model.Review;
 import com.example.irina.wtw.model.Want;
-import com.example.irina.wtw.services.FirebaseReviewStorage;
+import com.example.irina.wtw.services.FirebaseStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.support.constraint.Constraints.TAG;
 
 /**
  * Created by Irina on 07.07.2017.
@@ -50,11 +46,10 @@ public class MovieDetailActivity extends DialogFragment {
     ViewGroup root;
     Movie mMovie;
     MainActivity mainActivity;
-    FirebaseReviewStorage storage;
+    FirebaseStorage storage;
 
     static MovieDetailActivity newInstance(int num) {
-        MovieDetailActivity f = new MovieDetailActivity();
-        return f;
+        return new MovieDetailActivity();
     }
 
     @Override
@@ -68,41 +63,30 @@ public class MovieDetailActivity extends DialogFragment {
             mainActivity = (MainActivity ) getActivity();
         View view = inflater.inflate(R.layout.activity_movie_detail, container, false);
 
-        storage = new FirebaseReviewStorage();
-        //toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        //toolbarLayout.setTitle(mMovie.getTitle());
+        storage = new FirebaseStorage();
 
-        image = (ImageView) root.findViewById(R.id.cover);
+        image = root.findViewById(R.id.cover);
         Picasso.with(getContext()).load(mMovie.getBackdrop()).into(image);
 
-        description = (TextView) root.findViewById(R.id.description);
+        description = root.findViewById(R.id.description);
         description.setText(mMovie.getDescription());
         description.setMovementMethod(new ScrollingMovementMethod());
-        // mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar_detail);
-        //getActivity().setSupportActionBar(mToolbar);
 
-//        mButton = (Button) root.findViewById(R.id.fab);
-        /*mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //add to db
-            }
-        });*/
-
-        mButton = (FloatingActionButton) root.findViewById(R.id.fab);
+        mButton = root.findViewById(R.id.fab);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OnSuccessListener<DocumentReference> s = new OnSuccessListener<DocumentReference>() {
+                final Want want = new Want(mMovie.getId(),  "test_user", new Date(), mMovie.getTitle());
+
+                OnSuccessListener<Void> s = new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(Void v) {
                         Context context = mainActivity.getApplicationContext();
                         CharSequence text = "Success";
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
-
                     }
                 };
                 OnFailureListener f = new OnFailureListener() {
@@ -116,9 +100,7 @@ public class MovieDetailActivity extends DialogFragment {
                         toast.show();
                     }
                 };
-
-                mainActivity.dbAdapter.createMovie(mMovie.getTitle(), mMovie.getPosterUrl(), mMovie.getDescription());
-                Want want = new Want(mMovie.getId(), new Date(), "test_user");
+                mainActivity.dbAdapter.createWant(mMovie.getTitle(), mMovie.getId(), (new Date()), "test_user");
 
                 storage.addWant(want, s, f);
                 dismiss();
