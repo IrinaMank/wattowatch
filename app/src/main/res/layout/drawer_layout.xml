@@ -11,7 +11,7 @@
     <!-- The main content view where fragments are loaded -->
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar"
+        layout="@layout/search_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
