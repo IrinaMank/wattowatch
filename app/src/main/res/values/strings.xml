@@ -15,10 +15,13 @@
     <string name="saved_user_name">user_name</string>
     <string name="saved_user_email">user_email</string>
     <string name="saved_user_photo">user_photo</string>
+    <string name="saved_user_bio">user_bio</string>
     <string name="saved_user_photo_uri">user_photo_uri</string>
     <string name="title_activity_profile_activity">Profile_activity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <string name="profile_bio">Bio</string>
+    <string name="profile_email">Email</string>
 </resources>
