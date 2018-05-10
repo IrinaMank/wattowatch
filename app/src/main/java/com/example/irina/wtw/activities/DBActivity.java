@@ -35,6 +35,7 @@ public class DBActivity extends android.support.v4.app.Fragment {
     MainActivity mainActivity;
     List<Want> mList;
     FirebaseStorage storage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.db_activity, null);
